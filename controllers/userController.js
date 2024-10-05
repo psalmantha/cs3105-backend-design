@@ -23,15 +23,15 @@ const loginUser = (req, res) => {
 };
 
 const getProfile = (req, res) => {
-    const userId = req.user.id;
+    const userId = req.userId;
     
     const user = findUserById(userId);
     if (!user) {
         return res.status(404).json({ message: 'User not found' });
     }
 
-    const { id, username, email } = user;
-    return res.status(200).json({ id, username, email });
+    // const { id, username, email } = user;
+    return res.status(200).json({ user });
 };
 
 module.exports = { registerUser, loginUser, getProfile };
