@@ -10,5 +10,11 @@
     "username": "jullian",
     "email": "jullian0508.com",
     "password": "password123"
+  },
+  {
+    "id": 3,
+    "username": "jullian2",
+    "email": "jullian0508@yahoo.com",
+    "password": "password123"
   }
 ]
