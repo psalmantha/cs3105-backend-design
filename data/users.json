@@ -1,20 +1,14 @@
 [
   {
     "id": 1,
-    "username": "testuser",
-    "email": "testuser@example.com",
-    "password": "password123"
+    "username": "user1",
+    "email": "user1@yahoo.com",
+    "password": "user1password"
   },
   {
     "id": 2,
-    "username": "jullian",
-    "email": "jullian0508.com",
-    "password": "password123"
-  },
-  {
-    "id": 3,
-    "username": "jullian2",
-    "email": "jullian0508@yahoo.com",
-    "password": "password123"
+    "username": "user2",
+    "email": "user2@yahoo.com",
+    "password": "user2password"
   }
 ]
