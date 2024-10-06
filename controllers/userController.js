@@ -1,4 +1,5 @@
-const { createUser, verifyPassword, findUserById } = require('../models/userModel');
+const { createUser, verifyPassword, findUser, findUserById } = require('../models/userModel');
+const jwt = require('jsonwebtoken');
 
 const registerUser = (req, res) => {
     const { username, email, password } = req.body;
@@ -18,19 +19,24 @@ const loginUser = (req, res) => {
         return res.status(400).json({ message: 'Invalid email or password' });
     }
 
-    const token = `mock-token-${email}`;
+    const user = findUser(email);
+    if (!user) {
+        return res.status(400).json({ message: 'User not found' });
+    }
+
+    const token = jwt.sign({ id: user.id }, '0x11!$#', { expiresIn: '1h' });
+
     return res.status(200).json({ message: 'Login successful', token });
 };
 
 const getProfile = (req, res) => {
-    const userId = req.userId;
-    
+    const userId = req.user.id; 
     const user = findUserById(userId);
+
     if (!user) {
         return res.status(404).json({ message: 'User not found' });
     }
 
-    // const { id, username, email } = user;
     return res.status(200).json({ user });
 };
 
