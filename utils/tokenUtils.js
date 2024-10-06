@@ -1,13 +1,17 @@
 const jwt = require('jsonwebtoken');
-const secretKey = '0x11!$#'; 
+const secretKey = '0x11!$#';
 
-const verifyToken = (token) => {
-  try {
-    const decoded = jwt.verify(token, secretKey);
-    return decoded;
-  } catch (error) {
-    return null;
-  }
+const signToken = (userId) => {
+    return jwt.sign({ id: userId }, secretKey, { expiresIn: '1h' });
 };
 
-module.exports = { verifyToken };
+const verifyToken = (token) => {
+    try {
+        const decoded = jwt.verify(token, secretKey);
+        return decoded;
+    } catch (error) {
+        return null;
+    }
+};
+
+module.exports = { signToken, verifyToken };
