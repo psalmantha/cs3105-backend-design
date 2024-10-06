@@ -1,5 +1,8 @@
+require('dotenv').config();
 const { createUser, verifyPassword, findUser, findUserById } = require('../models/userModel');
 const jwt = require('jsonwebtoken');
+
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const registerUser = (req, res) => {
     const { username, email, password } = req.body;
@@ -15,17 +18,12 @@ const loginUser = (req, res) => {
         return res.status(400).json({ message: 'Email and password are required' });
     }
 
-    if (!verifyPassword(email, password)) {
+    const user = findUser(email);
+    if (!user || !verifyPassword(email, password)) {
         return res.status(400).json({ message: 'Invalid email or password' });
     }
 
-    const user = findUser(email);
-    if (!user) {
-        return res.status(400).json({ message: 'User not found' });
-    }
-
-    const token = jwt.sign({ id: user.id }, '0x11!$#', { expiresIn: '1h' });
-
+    const token = jwt.sign({ id: user.id }, JWT_SECRET_KEY, { expiresIn: '1h' });
     return res.status(200).json({ message: 'Login successful', token });
 };
 
