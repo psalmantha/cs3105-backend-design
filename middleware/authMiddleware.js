@@ -19,31 +19,17 @@ const authenticateToken = (req, res, next) => {
     }
 
     req.user = user;
-
     next();
 };
 
 const validateUserRegistration = (req, res, next) => {
     const { username, email, password } = req.body;
-    const errors = [];
 
     if (!username || !email || !password) {
-        errors.push('All fields (username, email, password) are required.');
+        return res.status(400).json({ message: 'All fields (username, email, password) are required.' });
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (email && !emailRegex.test(email)) {
-        errors.push('Invalid email format.');
-    }
-
-    if (username && username.length < 3) {
-        errors.push('Username must be at least 3 characters long.');
-    }
-
-    if (password && password.length < 6) {
-        errors.push('Password must be at least 6 characters long.');
-    }
-
+    const errors = validateRegistrationFields(username, email, password);
     if (errors.length > 0) {
         return res.status(400).json({ errors });
     }
@@ -53,6 +39,25 @@ const validateUserRegistration = (req, res, next) => {
     }
 
     next();
+};
+
+const validateRegistrationFields = (username, email, password) => {
+    const errors = [];
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+        errors.push('Invalid email format.');
+    }
+
+    if (username.length < 3) {
+        errors.push('Username must be at least 3 characters long.');
+    }
+
+    if (password.length < 6) {
+        errors.push('Password must be at least 6 characters long.');
+    }
+
+    return errors;
 };
 
 module.exports = { validateUserRegistration, authenticateToken };
